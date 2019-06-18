@@ -1,18 +1,20 @@
-import pandas as pd 
+#encoding: utf-8
+
+import pandas as pd
 import xgboost as xgb
 # 读取数据
-train = pd.read_csv(r"D:\xgboost\train.csv")
+train = pd.read_csv(r"D:\03code\python\pandas\train.csv")
 print(train)
-test = pd.read_csv(r"D:\xgboost\test.csv")
-feature_columns_to_use = ['A', 'B', 'C','D', 'E', 'F','G', 'H', 'I',]
+test = pd.read_csv(r"D:\03code\python\pandas\test.csv")
+feature_columns_to_use = ['A', 'B', 'C','D', 'E', 'F','G', 'H', 'I']
 train_for_matrix = train[feature_columns_to_use]
 test_for_matrix = test[feature_columns_to_use]
-train_X = train_for_matrix.as_matrix()
-test_X = test_for_matrix.as_matrix()
+train_x = train_for_matrix.values
+test_x = test_for_matrix.values
 train_y = train['YYYY']
 gbm = xgb.XGBRegressor(max_depth=10, n_estimators=3000, learning_rate=0.01)
-gbm.fit(train_X, train_y)
-predictions = gbm.predict(test_X)
+gbm.fit(train_x, train_y)
+predictions = gbm.predict(test_x)
 submission = pd.DataFrame({'row_id': test['row_id'],
                             'BH': predictions})
 print(submission)
